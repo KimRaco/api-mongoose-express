@@ -15,6 +15,15 @@ const server = express()
 //middleware
 server.use(express.json()) //convierte el request a un json (JSON.parse)
 
+server.use((request, response, next) => {
+
+    const { name } = request.body
+    if(name){
+        console.log(`Welcome ${name}`)
+    }
+    next()
+}) 
+
 //routers
 server.use('/koders', kodersRouter)
 

@@ -56,6 +56,7 @@ router.post('/',async (request, response) => {
 
 })
 
+
 router.patch('/koders/:id', async (request, response) => {
     
     try{
@@ -64,7 +65,7 @@ router.patch('/koders/:id', async (request, response) => {
         const newData = request.body
     
         const koderUpdated = await Koder.findByIdAndUpdate(id, newData,{ new:true })
-            
+
         response.json({
             sucess: true,
             data: {
@@ -105,5 +106,6 @@ router.delete('/koders/:id', async (request, response) => {
         })
     } 
 })
+
 
 export default router
