@@ -4,7 +4,15 @@ import { CustomError } from '../errorCustom.js'
 
 const router = express.Router()
 
-router.get('/',async (request, response) => {
+router.use((request, response, next) => { // Middleware a nivel de router
+    next()
+})
+
+const middlewareGetKoders = (request, response, next) => {
+    next() //Middleware a nivel de endpoint
+}
+
+router.get('/', middlewareGetKoders, async (request, response) => {
     try {
         const allKoders = await Koder.find({})
         
@@ -12,7 +20,7 @@ router.get('/',async (request, response) => {
         throw new CustomError("Koders not found", 404)
         
         response.json({
-            sucess: true,
+            success: true,
              data: {
                 koders: allKoders
              }
@@ -22,7 +30,7 @@ router.get('/',async (request, response) => {
         response
         .status(error.status)
         .json({
-            sucess: false,
+            success: false,
             message: error.message
         })
     }
@@ -39,7 +47,7 @@ router.post('/',async (request, response) => {
         response
         .status(201)
         .json({
-            sucess: true,
+            success: true,
              data: {
                 koders: koderCreated
              }
@@ -49,7 +57,7 @@ router.post('/',async (request, response) => {
         response
         .status(error.status || 400)
         .json({
-            sucess: false,
+            success: false,
             message: error.message
         })
     }
@@ -67,7 +75,7 @@ router.patch('/koders/:id', async (request, response) => {
         const koderUpdated = await Koder.findByIdAndUpdate(id, newData,{ new:true })
 
         response.json({
-            sucess: true,
+            success: true,
             data: {
                 koders: koderUpdated
             }
@@ -77,7 +85,7 @@ router.patch('/koders/:id', async (request, response) => {
         response
         .status(error.status || 400)
         .json({
-            sucess: false,
+            success: false,
             message: error.message
         })
     } 
@@ -91,7 +99,7 @@ router.delete('/koders/:id', async (request, response) => {
         const koderDeleted = await Koder.findByIdAndDelete(id)
             
          response.json({
-            sucess: true,
+            success: true,
              data: {
                 koders: koderDeleted
              }
@@ -101,7 +109,7 @@ router.delete('/koders/:id', async (request, response) => {
         response
         .status(error.status || 400)
         .json({
-            sucess: false,
+            success: false,
             message: error.message
         })
     } 

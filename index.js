@@ -21,6 +21,20 @@ server.use((request, response, next) => {
     if(name){
         console.log(`Welcome ${name}`)
     }
+    next() //Middleware a nivel de aplicacion
+}) 
+
+server.use((request, response, next) => {
+
+    const { isAdmin } = request.body
+    if(!isAdmin){
+        response.status(403).json({
+            success: false,
+            message: "Unauthorized"
+        })
+        return
+    } 
+    delete request.isAdmin
     next()
 }) 
 
